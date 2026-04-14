@@ -1,6 +1,6 @@
 // SafeHer API service — connects to Flask backend at localhost:5000
 // ALL data is REAL from NCRB dataset + LightGBM ML model
-const BASE = "http://localhost:5000/api";
+const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export const api = {
   // ── Heatmap (real district risk data) ─────────────────────────────
