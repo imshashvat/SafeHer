@@ -79,11 +79,14 @@ Firebase-powered authentication with persistent user profiles and emergency cont
 | Feature | Detail |
 |---------|--------|
 | **Model** | LightGBM (Gradient Boosted Trees) |
-| **Training Data** | NCRB Crime Records (2001–2015) |
-| **Crime Types** | Rape, Kidnapping, Dowry Deaths, Assault on Women, Insult to Modesty, Cruelty by Husband |
+| **Training Data** | Real NCRB Crime Records (2001–2015) — 10,921 district-year rows |
+| **Crime Types** | Rape, Kidnapping, Dowry Deaths (`dowry`), Assault on Women (`assault`), Insult to Modesty (`insult`), Cruelty by Husband (`cruelty`) |
 | **Coverage** | 1,032 districts across 28 States + 8 Union Territories (36 total) |
-| **Accuracy** | 99.4% (F1 Score) |
-| **Time Awareness** | Risk scores adjust based on time of day (night = +40% risk) |
+| **Accuracy** | 99.4% F1 Score (LightGBM) |
+| **Training Features** | 18 features: 6 raw crime counts + `total_crimes`, `risk_score`, 4 ratios, `crime_trend`, `police_total`, `ipc_total`, `state_enc`, `district_enc`, `year` |
+| **Risk Score Formula** | `rape×3.0 + kidnapping×2.5 + assault×2.0 + dowry×2.0 + cruelty×1.5 + insult×1.0` |
+| **Risk Labels** | Within-year quantile split → 0=SAFE, 1=MODERATE, 2=HIGH RISK (~33% each) |
+| **Time Awareness** | Risk adjusts by time of day: Night (10pm–6am) = +40%, Evening (6–10pm) = +15% |
 
 ### 🗺️ Interactive Safety Heatmap
 - Full-screen dark-themed map with **1,032 district markers**
@@ -102,11 +105,17 @@ Firebase-powered authentication with persistent user profiles and emergency cont
 - GPS auto-fill for current location
 
 ### 🚨 Emergency SOS System
-- **One-tap SOS button** always visible on screen
-- Sends emergency email to saved contacts via SMTP
-- Includes live GPS location link
-- **Fake Call** feature to simulate an incoming phone call
-- **Shake Detection** — triggers SOS when phone is shaken
+- **One-tap SOS button** always visible (bottom-right, red pulsing button)
+- 5-second countdown with cancel option before alert fires
+- Sends emergency email to saved contacts via SMTP with live GPS location link
+- **Shake Detection** — triggers SOS when phone is shaken vigorously
+
+### 📞 Fake Call Feature
+- Floating **phone icon button** sits beside the SOS button
+- Simulates a realistic incoming phone call (ringing + vibration)
+- Useful when a woman feels unsafe — she can "take a call" to excuse herself from a situation without needing anyone to actually call her
+- Caller name is customizable in Profile settings
+- Full-screen incoming call UI with Answer / Decline buttons
 
 ### 👥 Community Incident Reporting
 - **Anonymous** incident reporting (no personal info collected)
@@ -407,7 +416,7 @@ SafeHer/
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ---
 
