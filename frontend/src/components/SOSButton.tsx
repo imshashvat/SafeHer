@@ -134,34 +134,58 @@ const SOSButton = () => {
 
   return (
     <>
-      {/* ── Floating button group: Phone + SOS side by side ── */}
-      <div
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
-        style={{ filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.5))" }}
-      >
-        {/* Phone / Fake Call button */}
-        <button
-          onClick={() => setShowFakeCall(true)}
-          title="Fake Call"
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110"
-          style={{
-            background: "rgba(20,20,32,0.9)",
-            border: "1.5px solid rgba(255,255,255,0.15)",
-            backdropFilter: "blur(12px)",
-          }}
-        >
-          <Phone className="w-5 h-5" style={{ color: "#00D4AA" }} />
-        </button>
+      {/* ── Floating button group: Phone (Fake Call) + SOS ── */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
+
+        {/* Fake Call button — teal, clearly visible */}
+        <div className="flex flex-col items-center gap-1">
+          <button
+            onClick={() => setShowFakeCall(true)}
+            title="Fake Call"
+            className="relative w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+            style={{
+              background: "#00D4AA",
+              boxShadow: "0 0 0 0 rgba(0,212,170,0.4)",
+              animation: "teal-ping 2s cubic-bezier(0.4,0,0.6,1) infinite",
+            }}
+          >
+            {/* outer glow ring */}
+            <span
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: "rgba(0,212,170,0.25)",
+                animation: "teal-ping 2s cubic-bezier(0.4,0,0.6,1) infinite",
+              }}
+            />
+            <Phone className="w-5 h-5 relative z-10" style={{ color: "#0a0a14" }} />
+          </button>
+          <span className="text-[9px] font-semibold tracking-wide" style={{ color: "#00D4AA" }}>
+            CALL
+          </span>
+        </div>
 
         {/* SOS button */}
-        <button
-          onClick={handleSOS}
-          className="w-16 h-16 rounded-full bg-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center hover:scale-110 transition-transform relative"
-        >
-          <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
-          <span className="relative">SOS</span>
-        </button>
+        <div className="flex flex-col items-center gap-1">
+          <button
+            onClick={handleSOS}
+            className="relative w-16 h-16 rounded-full bg-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center hover:scale-110 transition-transform"
+          >
+            <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
+            <span className="relative">SOS</span>
+          </button>
+          <span className="text-[9px] font-semibold tracking-wide text-primary">
+            EMERGENCY
+          </span>
+        </div>
       </div>
+
+      {/* keyframes for teal pulse */}
+      <style>{`
+        @keyframes teal-ping {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,170,0.5); }
+          50% { box-shadow: 0 0 0 10px rgba(0,212,170,0); }
+        }
+      `}</style>
 
       {/* ── Fake Call Full-Screen ─────────────────────────── */}
       <AnimatePresence>
