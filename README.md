@@ -5,6 +5,10 @@
 <h1 align="center">🛡️ SafeHer — AI-Powered Women Safety Platform</h1>
 
 <p align="center">
+  ⭐ <b>If you liked this Project then please consider giving it a Star!</b> ⭐
+</p>
+
+<p align="center">
   <b>Predict danger. Before it happens.</b><br/>
   Real-time crime intelligence for 1,032 districts across 36 Indian States & Union Territories,<br/>
   powered by 15 years of NCRB data and a LightGBM ML model with 99.4% accuracy.
