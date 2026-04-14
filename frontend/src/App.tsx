@@ -9,7 +9,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SOSButton from "@/components/SOSButton";
-import FakeCallButton from "@/components/FakeCallButton";
+
 import Index from "./pages/Index";
 import HeatmapPage from "./pages/HeatmapPage";
 import RouteAnalyzer from "./pages/RouteAnalyzer";
@@ -76,7 +76,7 @@ const AppRoutes = () => {
       </Routes>
       {user && <Footer />}
       {user && <SOSButton />}
-      {user && <FakeCallButton />}
+
     </>
   );
 };
