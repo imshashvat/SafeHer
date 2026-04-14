@@ -1,0 +1,82 @@
+{
+  "best_model": "LightGBM",
+  "best_accuracy": 0.9943019943019943,
+  "models": {
+    "RandomForest": {
+      "cv_mean": 0.9814971751412429,
+      "cv_std": 0.004921257454854344,
+      "test_accuracy": 0.9817663817663818,
+      "feature_importance": {
+        "rape": 0.12783857749662086,
+        "kidnapping": 0.15524622593264967,
+        "dowry_deaths": 0.036263362827140974,
+        "assault": 0.19608792782229614,
+        "insult_to_modesty": 0.08769077238175865,
+        "cruelty_by_husband": 0.2867363986806094,
+        "importation_of_girls": 0.011005501225821399,
+        "year": 0.0036084039143324414,
+        "state_encoded": 0.0059897679909917375,
+        "district_encoded": 0.006038795347565249,
+        "rape_ratio": 0.018437722707235735,
+        "kidnap_ratio": 0.018245126849187544,
+        "assault_ratio": 0.01997196187015933,
+        "cruelty_ratio": 0.020653993930945892,
+        "year_trend": 0.006185461022684985
+      }
+    },
+    "LogisticRegression": {
+      "cv_mean": 0.9963276836158192,
+      "cv_std": 0.001967286479828282,
+      "test_accuracy": 0.992022792022792
+    },
+    "KNN": {
+      "cv_mean": 0.95,
+      "cv_std": 0.005999084910055182,
+      "test_accuracy": 0.954985754985755
+    },
+    "XGBoost": {
+      "cv_mean": 0.9860169491525423,
+      "cv_std": 0.002803592265717377,
+      "test_accuracy": 0.9863247863247864,
+      "feature_importance": {
+        "rape": 0.04193712770938873,
+        "kidnapping": 0.05196893587708473,
+        "dowry_deaths": 0.011056446470320225,
+        "assault": 0.11427010595798492,
+        "insult_to_modesty": 0.02121802419424057,
+        "cruelty_by_husband": 0.5811993479728699,
+        "importation_of_girls": 0.00652020750567317,
+        "year": 0.005616059992462397,
+        "state_encoded": 0.005751274526119232,
+        "district_encoded": 0.007090622093528509,
+        "rape_ratio": 0.030666489154100418,
+        "kidnap_ratio": 0.029744302853941917,
+        "assault_ratio": 0.04541781172156334,
+        "cruelty_ratio": 0.04237161576747894,
+        "year_trend": 0.005171756260097027
+      }
+    },
+    "LightGBM": {
+      "cv_mean": 0.993502824858757,
+      "cv_std": 0.0018087921574669165,
+      "test_accuracy": 0.9943019943019943,
+      "feature_importance": {
+        "rape": 1443,
+        "kidnapping": 1269,
+        "dowry_deaths": 471,
+        "assault": 1747,
+        "insult_to_modesty": 629,
+        "cruelty_by_husband": 3393,
+        "importation_of_girls": 201,
+        "year": 290,
+        "state_encoded": 281,
+        "district_encoded": 331,
+        "rape_ratio": 807,
+        "kidnap_ratio": 663,
+        "assault_ratio": 1014,
+        "cruelty_ratio": 2502,
+        "year_trend": 447
+      }
+    }
+  }
+}
