@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { User, Phone, Mail, Trash2, Plus, Send, Settings, Moon, Navigation, Vibrate, Save, X, AlertCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { User, Phone, Mail, Trash2, Plus, Send, Settings, Moon, Navigation, Vibrate, Save, X, AlertCircle, PhoneCall } from "lucide-react";
+import FakeCall from "@/components/FakeCall";
 import {
   getProfile, saveProfile, getContacts, saveContacts, addContact, removeContact,
   getSettings, saveSettings, syncContactsToFirestore, syncProfileToFirestore,
@@ -23,6 +24,7 @@ const Profile = () => {
   const [testSending, setTestSending] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showFakeCall, setShowFakeCall] = useState(false);
 
   // Load data from Firestore on mount
   useEffect(() => {
@@ -294,25 +296,50 @@ const Profile = () => {
               </div>
             ))}
 
-            {/* Fake call name */}
-            <div className="flex items-center justify-between py-2 border-t border-border pt-4">
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-muted-foreground" />
-                <div>
-                  <div className="text-sm text-foreground">Fake Call Caller Name</div>
-                  <div className="text-xs text-muted-foreground">Displayed when fake call is triggered</div>
-                </div>
-              </div>
-              <input
-                value={settings.fakeCallName}
-                onChange={e => handleFakeCallNameChange(e.target.value)}
-                onBlur={handleFakeCallNameBlur}
-                className="w-28 bg-muted border border-border rounded-md px-2 py-1 text-sm text-foreground outline-none text-right"
-              />
-            </div>
           </div>
         </motion.div>
+        {/* Fake Call Section */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-panel rounded-xl p-6 mb-6">
+          <h2 className="font-heading text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
+            <PhoneCall className="w-5 h-5 text-[#00D4AA]" /> Fake Call
+          </h2>
+          <p className="text-xs text-muted-foreground mb-5">Simulate an incoming call to safely exit uncomfortable situations.</p>
+
+          {/* Caller Name */}
+          <div className="flex items-center justify-between py-3 border-b border-border mb-4">
+            <div>
+              <div className="text-sm text-foreground">Caller Name</div>
+              <div className="text-xs text-muted-foreground">Displayed on the fake call screen</div>
+            </div>
+            <input
+              value={settings.fakeCallName}
+              onChange={e => handleFakeCallNameChange(e.target.value)}
+              onBlur={handleFakeCallNameBlur}
+              className="w-28 bg-muted border border-border rounded-md px-2 py-1 text-sm text-foreground outline-none text-right"
+              placeholder="Mom"
+            />
+          </div>
+
+          {/* Trigger button */}
+          <button
+            onClick={() => setShowFakeCall(true)}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              background: "linear-gradient(135deg, #00D4AA 0%, #00A88A 100%)",
+              color: "#0a0a14",
+              boxShadow: "0 0 20px rgba(0,212,170,0.3)",
+            }}
+          >
+            <PhoneCall className="w-4 h-4" />
+            Trigger Fake Call Now
+          </button>
+        </motion.div>
       </div>
+
+      {/* Fake Call Full-Screen Overlay */}
+      <AnimatePresence>
+        {showFakeCall && <FakeCall onClose={() => setShowFakeCall(false)} />}
+      </AnimatePresence>
     </div>
   );
 };

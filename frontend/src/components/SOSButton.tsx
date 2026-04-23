@@ -1,77 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, Loader2, AlertCircle, UserPlus, Phone, PhoneOff, User } from "lucide-react";
+import { CheckCircle, Loader2, AlertCircle, UserPlus, Phone } from "lucide-react";
 import { getContacts, getSettings, type EmergencyContact } from "@/lib/localStorage";
 import { useNavigate } from "react-router-dom";
 
-// ── Fake Call Sub-component ─────────────────────────────────────────
-const FakeCallScreen = ({ onClose }: { onClose: () => void }) => {
-  const [stage, setStage] = useState<"ringing" | "active">("ringing");
-  const [callDuration, setCallDuration] = useState(0);
-  const settings = getSettings();
-  const callerName = settings.fakeCallName || "Mom";
 
-  useEffect(() => {
-    if (stage === "ringing" && settings.vibration && "vibrate" in navigator) {
-      const interval = setInterval(() => navigator.vibrate([300, 200, 300]), 1500);
-      return () => { clearInterval(interval); navigator.vibrate(0); };
-    }
-  }, [stage, settings.vibration]);
-
-  useEffect(() => {
-    if (stage !== "active") return;
-    const interval = setInterval(() => setCallDuration(d => d + 1), 1000);
-    return () => clearInterval(interval);
-  }, [stage]);
-
-  const fmt = (s: number) =>
-    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-between"
-      style={{ background: "linear-gradient(180deg, #1a1a2e 0%, #0a0a0f 100%)" }}
-    >
-      <div className="flex flex-col items-center pt-20">
-        {stage === "ringing" && (
-          <motion.p animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2 }}
-            className="text-sm text-muted-foreground mb-4">Incoming Call...</motion.p>
-        )}
-        {stage === "active" && <p className="text-sm text-secondary mb-4">{fmt(callDuration)}</p>}
-        <div className="w-24 h-24 rounded-full bg-muted border-2 border-border flex items-center justify-center mb-4">
-          <User className="w-12 h-12 text-muted-foreground" />
-        </div>
-        <h2 className="font-heading text-2xl font-bold text-foreground">{callerName}</h2>
-        <p className="text-sm text-muted-foreground mt-1">Mobile</p>
-      </div>
-      <div className="pb-16 flex items-center gap-16">
-        <button
-          onClick={() => { if ("vibrate" in navigator) navigator.vibrate(0); onClose(); }}
-          className="w-16 h-16 rounded-full bg-primary flex items-center justify-center hover:bg-primary/90 transition-colors"
-        >
-          <PhoneOff className="w-7 h-7 text-primary-foreground" />
-        </button>
-        {stage === "ringing" && (
-          <motion.button
-            animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
-            onClick={() => { if ("vibrate" in navigator) navigator.vibrate(0); setStage("active"); }}
-            className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center hover:bg-secondary/90 transition-colors"
-          >
-            <Phone className="w-7 h-7 text-secondary-foreground" />
-          </motion.button>
-        )}
-      </div>
-    </motion.div>
-  );
-};
-
-// ── Main SOS + FakeCall Button Group ───────────────────────────────
+// ── Main SOS + Emergency Call Button Group ─────────────────────────
 const SOSButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [stage, setStage] = useState<"countdown" | "sending" | "sent" | "no-contacts" | null>(null);
   const [countdown, setCountdown] = useState(5);
-  const [showFakeCall, setShowFakeCall] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const navigate = useNavigate();
 
@@ -134,14 +72,14 @@ const SOSButton = () => {
 
   return (
     <>
-      {/* ── Floating button group: Phone (Fake Call) + SOS ── */}
+      {/* ── Floating button group: Call 112 + SOS ── */}
       <div className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
 
-        {/* Fake Call button — teal, clearly visible */}
+        {/* Emergency Call 112 button */}
         <div className="flex flex-col items-center gap-1">
-          <button
-            onClick={() => setShowFakeCall(true)}
-            title="Fake Call"
+          <a
+            href="tel:112"
+            title="Call Emergency 112"
             className="relative w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
             style={{
               background: "#00D4AA",
@@ -158,9 +96,9 @@ const SOSButton = () => {
               }}
             />
             <Phone className="w-5 h-5 relative z-10" style={{ color: "#0a0a14" }} />
-          </button>
+          </a>
           <span className="text-[9px] font-semibold tracking-wide" style={{ color: "#00D4AA" }}>
-            CALL
+            112
           </span>
         </div>
 
@@ -187,10 +125,7 @@ const SOSButton = () => {
         }
       `}</style>
 
-      {/* ── Fake Call Full-Screen ─────────────────────────── */}
-      <AnimatePresence>
-        {showFakeCall && <FakeCallScreen onClose={() => setShowFakeCall(false)} />}
-      </AnimatePresence>
+
 
       {/* ── SOS Modal ────────────────────────────────────── */}
       <AnimatePresence>
